@@ -5,6 +5,7 @@ import json
 from typing import List, Dict
 import os
 from tqdm import tqdm
+from scipy import sparse
 
 
 class QdrantLocalSetup:
@@ -49,17 +50,85 @@ class QdrantLocalSetup:
         }
         return distance_map.get(distance, models.Distance.COSINE)
 
-    def upload_embeddings(self,
-                          collection_name: str,
-                          embeddings: np.ndarray,
-                          articles: List[Dict],
-                          batch_size: int = 100):
+    def upload_sparse_embeddings(self,
+                                 collection_name: str,
+                                 sparse_matrix,
+                                 articles: List[Dict],
+                                 batch_size: int = 100):
         """
-        Загрузка эмбеддингов и метаданных статей
+        Загрузка SPARSE эмбеддингов в Qdrant
 
         Args:
             collection_name: имя коллекции
-            embeddings: массив эмбеддингов shape (n_articles, vector_size)
+            sparse_matrix: scipy sparse матрица (n_articles, vector_size)
+            articles: список статей с метаданными
+            batch_size: размер батча для загрузки
+        """
+        # Конвертируем sparse в dense батчами для экономии памяти
+        print(f"Начало загрузки {len(articles)} статей в коллекцию '{collection_name}'...")
+
+        points = []
+
+        for i in tqdm(range(len(articles)), desc="Загрузка статей"):
+            # Получаем i-ю строку как dense вектор
+            if sparse.issparse(sparse_matrix):
+                # Для sparse матрицы конвертируем строку в dense
+                embedding = sparse_matrix[i].toarray().flatten().tolist()
+            else:
+                # Уже dense
+                embedding = sparse_matrix[i].tolist()
+
+            article = articles[i]
+            payload = {
+                'id': article.get('id', str(i)),
+                'title': article.get('title', ''),
+                'text': article.get('text', '')[:2000],  # Ограничиваем длину
+                'published_time': article.get('published_time', ''),
+                'source': 'TechCrunch',
+                'url': article.get('url', ''),
+                'category': article.get('category', ''),
+                'author': article.get('author', '')
+            }
+
+            payload = {k: v for k, v in payload.items() if v}
+
+            point = models.PointStruct(
+                id=payload['id'],
+                vector=embedding,
+                payload=payload
+            )
+            points.append(point)
+
+            if len(points) >= batch_size:
+                self.client.upsert(
+                    collection_name=collection_name,
+                    points=points,
+                    wait=True
+                )
+                points = []
+
+        if points:
+            self.client.upsert(
+                collection_name=collection_name,
+                points=points,
+                wait=True
+            )
+
+        print(f"Успешно загружено {len(articles)} статей")
+        collection_info = self.client.get_collection(collection_name)
+        print(f"   Векторов в коллекции: {collection_info.points_count}")
+
+    def upload_dense_embeddings(self,
+                                collection_name: str,
+                                embeddings: np.ndarray,
+                                articles: List[Dict],
+                                batch_size: int = 100):
+        """
+        Загрузка DENSE эмбеддингов в Qdrant
+
+        Args:
+            collection_name: имя коллекции
+            embeddings: numpy массив (n_articles, vector_size)
             articles: список статей с метаданными
             batch_size: размер батча для загрузки
         """
@@ -69,11 +138,14 @@ class QdrantLocalSetup:
         print(f"Начало загрузки {len(articles)} статей в коллекцию '{collection_name}'...")
 
         points = []
-        for i, (embedding, article) in enumerate(tqdm(zip(embeddings, articles), total=len(articles))):
+
+        for i, (embedding, article) in enumerate(tqdm(zip(embeddings, articles),
+                                                      total=len(articles),
+                                                      desc="Загрузка статей")):
             payload = {
                 'id': article.get('id', str(i)),
                 'title': article.get('title', ''),
-                'text': article.get('text', ''),
+                'text': article.get('text', '')[:2000],
                 'published_time': article.get('published_time', ''),
                 'source': 'TechCrunch',
                 'url': article.get('url', ''),
@@ -157,8 +229,8 @@ class QdrantLocalSetup:
 
 def main():
     setup = QdrantLocalSetup()
-    collection_name = "ai_trends_qwen3"
-    vector_size = 1024
+    collection_name = "ai_trends_bm25_4"
+    vector_size = 60846
 
     setup.create_collection(
         collection_name=collection_name,
@@ -169,9 +241,9 @@ def main():
     try:
         with open('techcrunch_ai_5488_articles_20260112_1535.json', 'r', encoding='utf-8') as f:
             articles = json.load(f)
-        embeddings = np.load('dense_embeddings_qwen.npy')
-        #embeddings = np.load('bm25_matrix.npz')
-        setup.upload_embeddings(collection_name, embeddings, articles)
+        #embeddings = np.load('dense_embeddings_qwen.npy')
+        embeddings = sparse.load_npz('bm25_matrix.npz')
+        setup.upload_sparse_embeddings(collection_name, embeddings, articles)
 
         print(f"Готово! Qdrant запущен с коллекцией '{collection_name}'")
         print(f"REST API: http://localhost:6333")
