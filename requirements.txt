@@ -1,0 +1,28 @@
+# Core web
+fastapi==0.104.1
+uvicorn[standard]==0.34.0
+python-multipart==0.0.6
+
+# ML / Deep Learning
+openai>=1.30.0,<2.0.0
+torch>=2.2.0
+transformers>=4.40.0
+sentence-transformers==3.0.1
+numpy==1.24.3
+scipy==1.13.0
+
+# Vector DB
+qdrant-client==1.16.0
+
+# Async & background tasks
+celery==5.3.4
+redis==5.0.1
+flower==2.0.1
+
+# HTTP & parsing
+requests==2.31.0
+beautifulsoup4==4.12.0
+APScheduler==3.10.4
+
+# Utils
+python-dotenv==1.0.0

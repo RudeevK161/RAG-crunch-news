@@ -1,0 +1,249 @@
+[
+  {
+    "question": "What are the features that GPT-5 can provide compared to GPT-4?",
+    "id": ["81dd3690-0641-5fbd-b2a0-c2ae95bb9a0c", "9a0df61d-4783-51f2-acc4-e66f52cd0813", "26a13d66-152b-5969-93e9-41e0b7b5c9aa", "13ed2979-8642-5bcd-809d-8897177f0c3d", "69e1be8c-f789-5de3-8c1a-c89f92639178"]
+  },
+  {
+    "question": "What new technologies in processor manufacturing will dominate in 2025?",
+    "id": ["ed6f3aa0-07bc-519e-b76a-aa79dc04b0a7", "eb17f839-22c4-5c8e-ab21-32f423d32aa2", "821d70b8-720d-5430-8fe5-3f679ffdfdc7", "8b678d66-56a3-55b5-9eb0-bcf11368c852", "7ab20568-f68c-5cfe-a657-14c93f76771c"]
+  },
+  {
+    "question": "What's new in the Microsoft and Open AI race?",
+    "id": ["cae59663-09df-5005-a909-63a05a853e7f", "3c7862bd-11ed-5227-8b33-2ea927f24bd0", "9cbbf332-c8d7-56c0-87e2-0a352d1f09c1"]
+  },
+  {
+    "question": "How are multimodal models (text, image, video, and audio) evolving?",
+    "id": ["d8240b33-2ec1-5da5-ad17-5cc2dfbf8b8c", "f9aa5688-9785-54a4-b377-80f0db840d10", "99a179ed-b2d9-5604-a458-5c19ee8839a0", "33ca7341-8844-536a-bf4f-ff3cdfed03c5", "55421df0-b7c0-5005-a23f-22ff83a6f4b7"]
+  },
+  {
+    "question": "What are AI agent systems, and how do they change the way automation is approached?",
+    "id": ["9c0a4b8e-704f-52f2-92ed-cc0c97da2c5d", "0ccf9b82-2a5d-522a-9eb2-c12eb8839587", "fc60f3bc-4d99-595a-96bb-89b1afb489de"]
+  },
+  {
+    "question": "What are the challenges and solutions for AI accuracy in healthcare applications?",
+    "id": ["0821507d-107b-526d-a4e6-03c7ffb90318", "507593c7-dd09-5647-8d9c-2cedb1ca3226", "6095f86a-b1b8-5b27-aafe-760252116ae1","1790269b-e587-5fb3-9685-4203ae9ed826", "25c45168-b168-567b-a545-4709a8f04adc"]
+  },
+  {
+    "question": "What is the strategic importance of Physical AI and humanoid robotics for major tech companies heading into 2026?",
+    "id": ["81ab4cfd-cb69-56b5-a0a7-ca08218a7117", "57c9e8b1-1d91-5d22-af7f-9a64fa0548e6", "87179b33-ad32-5122-a0cc-41ed46ab011c"]
+  },
+  {
+    "question": "How are data ownership rules evolving regarding the scraping of public platforms for training commercial AI models?",
+    "id": ["1aecd534-13a9-597f-b5ec-cc79ae6ba8e9", "3e70d4c9-b68a-5793-9c86-1d13f993d091", "29624515-9430-589b-9679-05249f3e0988","61c263cc-aa94-5586-86f6-c361d5abc997", "56cc10cc-dbb0-51df-afba-214d8d73d12a"]
+  },
+  {
+    "question": "What are the projected financial and infrastructure costs for maintaining a lead in the AI race?",
+    "id": ["fff45f35-289f-5195-8545-17cce7063072", "59ce9300-a16b-5be2-ba5d-053bd0341cac", "cbe096cc-7982-5bd8-9295-148dbcda5299"]
+  },
+  {
+    "question": "In what ways are AI agents transforming the e-commerce landscape and the way users perform online transactions?",
+    "id": ["cb570756-1aa7-5602-8651-7ff6f00a6952", "3f84815a-ceef-5331-97a7-5c5fcf52eab5", "89d44c37-ea00-51e3-a43a-bd507968b218", "8ff4b8f5-2eef-591f-8fd0-333ed20a8238"]
+  },
+  {
+    "question": "What are the primary regulatory challenges and antitrust concerns facing AI services in different global regions?",
+    "id": ["5e044531-f6b2-5cda-b8c9-34e6b6462c89", "aede8d84-665e-5469-9d5e-d65d3086bb3c", "56cc10cc-dbb0-51df-afba-214d8d73d12a", "9c4e6dd5-776f-599f-ba8f-4f317c62e6d2"]
+  },
+  {
+    "question": "How is AI expected to impact the labor market specifically concerning entry-level roles and corporate automation?",
+    "id": ["041b0f98-8565-5074-8de1-26b058ea7f14", "12838d87-e22a-533f-bed8-bd1966fb67e7", "2d0b5af8-99e0-5669-bd72-75d86c97a5da"
+    ]
+  },
+  {
+    "question": "What is the current state of AI-generated video and audio technology and what ethical risks are most prominent?",
+    "id": ["0dcd2040-b0b6-5f1a-bbf5-44d36b181391", "e76724f0-deac-54db-bca8-1afea45c3248", "55421df0-b7c0-5005-a23f-22ff83a6f4b7"]
+  },
+  {
+    "question": "How does the integration of AI into search engines affect web traffic for publishers and the overall open web ecosystem?",
+    "id": ["0821507d-107b-526d-a4e6-03c7ffb90318", "8a0a44af-3400-53aa-9bcb-13286394b8f7", "61c263cc-aa94-5586-86f6-c361d5abc997"]
+  },
+  {
+    "question": "What role do new hardware architectures play in enabling on-device and local AI processing?",
+    "id": ["81ab4cfd-cb69-56b5-a0a7-ca08218a7117", "7ab20568-f68c-5cfe-a657-14c93f76771c", "b53b5117-b4c2-5793-a98a-8aab78eb714f", "02bcd5ef-35d2-5773-a92f-2b07ed3d23da"]
+  },
+  {
+    "question": "How is generative AI being integrated into software development tools and the daily workflows of programmers?",
+    "id": ["f6b0d91c-eef5-5331-97a7-5c5fcf52eab5", "1c24c3f7-5864-5ec2-903a-03b66eefff8f", "26a13d66-152b-5969-93e9-41e0b7b5c9aa", "c41a891c-e70a-50c9-b82e-d2891a08d6d6"]
+  },
+  {
+    "question": "What are the latest breakthroughs in applying AI to scientific research, healthcare diagnostics, and drug discovery?",
+    "id": ["67e5cf9-232f-5c40-80fc-9e1b098f4f11", "07dd03a7-cd23-5f4e-89d2-af5a49a415fa", "4e197cde-d034-592e-8334-4616dcdcef7e"]
+  },
+  {
+    "question": "How are leadership changes and talent wars between major tech corporations shaping the industry?",
+    "id": ["57c9e8b1-1d91-5d22-af7f-9a64fa0548e6", "344aaacd-0e7d-5917-b45d-157c1edcf6f5", "209dc858-b91c-524e-bd50-e22284fd0a05"]
+  },
+  {
+    "question": "In what ways are social media platforms pivoting their business models to integrate generative AI features?",
+    "id": ["c89075e4-02e1-5917-af9e-953ab31316ba", "b8f70442-b2cf-5a86-9579-cb286d041c4d", "0a43e346-e3b7-57a4-b70e-9c72c774a0e7", "26a13d66-152b-5969-93e9-41e0b7b5c9aa"]
+  },
+  {
+    "question": "What initiatives are being taken by governments and companies to develop Sovereign AI and reduce dependence on foreign technology?",
+    "id": ["0dcd2040-b0b6-5f1a-bbf5-44d36b181391", "255fc6f6-8300-5d5c-b38b-15cd8ab58f0a", "3ca5457e-d5da-5ff5-86ec-c89342aba5bc", "31463f27-35aa-5774-926e-f7c2ae4a11f6"]
+  },
+  {
+    "question": "What strategic steps is Apple taking to develop its artificial intelligence (Apple Intelligence), and how is the company combining its own developments with collaboration with external partners?",
+    "id": ["12f35648-e30f-5b03-9503-10e9863bb1d3", "2fd11ecb-9e5d-517a-971e-18e869385214", "14323f19-7193-5f42-8258-87714f442c09","290bf60f-6b5e-5b14-b353-9dd44ed4063e", "e403cbc1-1996-56d0-a73e-4d14a711405a", "e3178e6d-a1c4-5e6d-b586-22349ffa694b", "8feb0f02-70f9-5fb9-8ec4-2b2dddb2d89c"]
+  },
+  {
+    "question": "How does Google plan to integrate its AI assistant, Gemini, into various household devices, and how will this change the way users interact with technology?",
+    "id": ["c9ebe517-e314-5606-a783-4d0aa76f423e","d824cc5c-1f9d-54a7-838c-b710a110a297","57f35f92-22d1-5424-95cb-36b94c7a4147", "c19f4166-cb81-5b50-91f1-eb0323b92f6b", "028b3581-fe72-523f-9572-21c20ccfa978"]
+  },
+  {
+    "question": "Why are there delays and problems with the development of Siri, and what are the consequences for the company and its users?",
+    "id": ["51121e6d-94af-5455-8ce2-1a131e5ba0fa","e2b4b1c1-c698-5b51-94c5-3830c9bd3615","51e3c960-cdd0-560e-8ad6-55d6b2b77d54","5a045b15-d4d8-5e13-a86d-8d23644d2d58", "636f280f-0345-5d43-9076-9ad0f7dcd0a7", "20ec3b0a-850b-5774-9cce-f6a1c6ba6a4b", "5990c44f-811f-5cbb-8c11-ffe32f59a8c4", "9c6684be-7688-5f2b-8032-dc325ad8d5ab"]
+  },
+  {
+    "question": "How are leading microprocessor manufacturers (Nvidia and Intel) adapting their strategies and product lines to the dynamic demand for specialized computing in different market segments?",
+    "id": ["f4b39579-7128-5e0c-93d7-5b10095517d8","797fdb86-a222-56ba-afc2-2da8c9f73e2f","eb17f839-22c4-5c8e-ab21-32f423d32aa2","e62a327a-c42d-5fe2-b22b-113972e0ed0c", "acbd7fff-5d27-5cf6-9a4b-526615b255a4", "fcbc348c-ea3a-588f-af74-27b6c9f0fa73", "7cc6cc2d-6da4-5025-8879-706e256c0fa3", "832b172b-2a32-5b3b-9262-99f0bf6745aa",
+    "821d70b8-720d-5430-8fe5-3f679ffdfdc7", "7ab20568-f68c-5cfe-a657-14c93f76771c"]
+  },
+  {
+    "question": "How are the largest technology companies (Amazon, Meta, Google) reorganizing their structures, strategies, and alliances to strengthen their positions in the global competition in the field of artificial intelligence?",
+    "id": ["8ee1d0e3-1f9f-5010-b1b7-e1aafb2f7bda","15e024da-eee0-5f9c-80b9-d20b03992336","465281bd-c183-536f-85b9-c39b4b0bd76a", "8ca03d2d-0e6b-562b-a93c-d7a5587c3779", "cc57fd54-c265-5093-be2f-10dc5ad2bd15", "246612f3-8baa-580b-8d16-2b5dff6af281", "f77c83eb-d618-54a1-b5db-37513be00efa", "5e044531-f6b2-5cda-b8c9-34e6b6462c89", "fc60f3bc-4d99-595a-96bb-89b1afb489de"]
+  },
+  {
+    "question":  "How is the introduction of digital twins, AI avatars changing the way we communicate, produce content, and collaborate remotely, and what are the potential socio-economic consequences?",
+    "id": ["30a169d7-8231-531d-a97e-09675013fa49","d70e4f46-1c61-5718-ba34-0c955e82445d","9be67f92-61e1-541d-9024-14ca90c4b4ea","c98ba796-5cae-5edf-8be0-ac61f47d0167","caf67aa3-d216-53aa-be4a-6acf017e1370", "7f0a79ec-2264-5276-a4ce-379631570953", "032cf064-7807-5d0c-8396-95ec44b36575", "52858df7-f844-55f7-9fe0-fe281207cc76"]
+  },
+   {
+    "question":  "What problems and risks arise during the mass adoption of generative artificial intelligence, and how are society, companies, and regulators trying to respond to them?",
+    "id": ["69d6edb2-cdb3-5395-8a67-fa9cf4dc7df5","fcfacd2c-c889-55e3-b4f7-da9ae5fe0c58","2b093417-4eaf-5d33-b0d5-48d4ee0eaf2d","720609a8-bff5-5a7f-88f6-9784fee8be45","59b2e97a-0194-5328-a70c-56436a3d4b8f","784163b8-4cb3-571d-bd17-d3269ba586c2", "bf66cf41-ad14-51c2-8827-7bf435390578", "7b7095cf-e5c7-5b55-b323-29f8987e61c4", "feefcf92-2203-5e32-90fb-3f244549ba64", "59ce9300-a16b-5be2-ba5d-053bd0341cac"
+    ]
+  },
+  {
+    "question":  "How do the disadvantages of modern AI assistants (disposable, socialization, and isolation) open up new market niches for startups?",
+    "id": ["62e467ed-c5c1-5975-93df-5340e46b4821","204b274d-6441-58b8-80b1-11c9031f9af4","85a2dc53-8616-5174-9717-b545fec010ef", "0a43e346-e3b7-57a4-b70e-9c72c774a0e7", "b8f70442-b2cf-5a86-9579-cb286d041c4d", "18d2b2c1-039c-5cef-bac6-46dc2018ffa5"]
+  },
+   {
+    "question":  "How are various developers and companies striving to make advanced AI technologies more accessible, efficient, and user-friendly for end users and professionals?",
+    "id":["3394520e-d696-5913-bc19-8cf54e90a4c7","e2bc2c20-052a-544f-aeb9-c78520ddb387","d1ce2a0b-23fc-5f33-887d-5cbb983f78f2", "344d7913-f8b2-5661-85df-bfe3cd394e89", "0e92c132-6476-5649-ad95-58d7cb57dcb4", "cb7dc9d8-e01a-56aa-982a-f439e207d0d4", "0a43e346-e3b7-57a4-b70e-9c72c774a0e7", "18d2b2c1-039c-5cef-bac6-46dc2018ffa5"]
+  },
+  {
+    "question":  "What fundamental changes in the paradigm of human interaction with the Internet and ensuring its security do autonomous AI agents in browsers bring with them?",
+    "id": ["c5560979-90c5-522f-8ee2-1247dc8237bc","be177103-1897-532f-a07b-a69e681fa8f0","aa4268ff-8a4e-5739-add0-d1a9ac01aea7","0cc29c61-7688-5965-8c6d-c9d12af030d0", "82fb3d1d-1dfb-5e90-890e-ff2c15fd9a12", "a3334a95-5be4-5d67-883d-1712e8d95a51", "664c96f4-c1dc-5487-98d6-0cd31663af70", "6262fe0b-0062-5ecf-97ed-dbc86b18061a", "c34191ec-0f74-5017-8b9d-ad8648aa1860", "14bfd9f4-845f-59a4-9480-b99b7fcde50f",
+    "c0149686-d579-5dbf-b3a0-d17b60812d81", "716df461-0302-50e3-bdd4-a16f182912b6"]
+  },
+  {
+    "question": "Which problems does Grok face with its image generation possibilities?",
+    "id": ["e8cde670-c73d-57a6-b49c-368a5657932e","f4b0e2a0-b5f4-5413-8c28-f4d92d2c1756","dfa09a77-f9c1-5830-9806-1e2eefe5c9ab","0dcd2040-b0b6-5f1a-bbf5-44d36b181391", "831932c8-5c48-5644-b6c9-4c0fc8330745", "feefcf92-2203-5e32-90fb-3f244549ba64", "385d19c4-b483-5c64-bfe4-aaec081c4630", "d8024d02-003b-5f6c-8171-e051421e15c3"]
+  },
+  {
+    "question": "What was introduced at CES?",
+    "id": ["aafc1561-5a94-5134-be6f-a9235ce446d9","c39101b7-1abd-5783-a7b6-eb12e078d348","348c7179-c280-5062-84c2-4fd27fc367cd","f0b69f4b-9a11-5179-99f5-bfb45f573297","81ab4cfd-cb69-56b5-a0a7-ca08218a7117","57c9e8b1-1d91-5d22-af7f-9a64fa0548e6","87179b33-ad32-5122-a0cc-41ed46ab011c","c23d134f-d0d1-501d-9112-06ebe4fb09d1","42c10ce2-1880-5a8f-b95e-3ec82bc3e19c","832b172b-2a32-5b3b-9262-99f0bf6745aa","e0dd5a71-e5ff-5189-9466-ffe9f1a85970","821d70b8-720d-5430-8fe5-3f679ffdfdc7","eb17f839-22c4-5c8e-ab21-32f423d32aa2","028b3581-fe72-523f-9572-21c20ccfa978","4d632bd8-cb9d-50b1-85f1-6c663a87aa16"]
+  },
+  {
+    "question": "How much money have the company raised or aims to raise?",
+    "id": ["6965accf-9996-5ec1-81a4-15e65de9300e","89fce992-f41d-5d76-8b80-57cf60ce3dd1","02ea3fc7-e27a-54b3-917d-95e8a8fc8f24","2e468a2b-2340-5432-81cd-97890bf2efd2","039720a7-75cf-5834-88ae-5709fb2f6daa","4fc456e7-0b66-5a19-ba6c-b090dd2e80f7", "633a698c-9e3f-5713-a422-0cbfbfc67156","2857f10b-a8cf-5f9a-b5ed-577bf4bf67b3", "8a4963bf-d0fb-5826-9c15-f2aef3d6f669", "dde92f70-71da-54dc-9c67-0d9630ca183e"]
+  },
+  {
+    "question": "What can robots do?",
+    "id": ["ff225636-c5f1-52c1-a7dd-e1e08431f0b8","e7c72f73-7c22-54db-85f8-b48e97e3d650","c46f9e0f-857c-50ec-afb2-ed215abd392c","14f62b64-49e5-5cc6-9b59-3fb26d219dfa","81ab4cfd-cb69-56b5-a0a7-ca08218a7117","87179b33-ad32-5122-a0cc-41ed46ab011c","1c71e8e1-33a9-50d5-acee-5784912ab3b7","5e4d33a0-add2-5931-86f5-f4c2c52d4a13"]
+  },
+  {
+    "question": "How much money did Meta offer as signing bonuses?",
+    "id": ["b3a8e4b9-983f-5051-a6cb-a82315733174","0e59e94c-b539-512b-b7ac-5e336e647227","c6690578-5ef9-5e2c-a621-c9f7f0c14a71", "b6314f55-0cdb-5c99-b66d-ebbd0f57b3c4","748041f4-eba9-5569-bb2f-0c4302296ab6"]
+  },
+  {
+    "question": "Who did Meta hire?",
+    "id": ["c6690578-5ef9-5e2c-a621-c9f7f0c14a71","4205ee6d-993d-5d33-9a2c-f43958c6fc18","b6314f55-0cdb-5c99-b66d-ebbd0f57b3c4","5f28d336-a351-5d39-b795-7089859d1393", "c5a74964-a40e-568a-8fff-880c57a9ef5e","70c86ec2-edbc-5100-abbf-68d2eac772dd"]
+  },
+  {
+    "question": "What was announced?",
+    "id": ["513befdc-43c1-5881-ba10-a089c0190d55","fee87fbc-3733-556c-a298-d46010992c47","274c3987-1546-5e38-8673-f3223646bc77","ab2bbe2b-3b8f-549a-bf82-26e9380c6b4c","5bd65f87-959e-518b-a575-198430e7f0b2","66cf55ad-cd07-5626-ab06-cebf90921dbf","4cb3eeef-a281-52f8-be63-07be5e9cd778","0821507d-107b-526d-a4e6-03c7ffb90318", "99d641d9-f659-596e-a333-9fa306675c85", "f9302719-4d5f-55c3-a89b-21b9767fbd65"
+    ]
+  },
+  {
+    "question": "How much does subscriptions cost?",
+    "id": ["ad9b373a-b038-5a00-af9f-14659dda00cd","faadb419-1e49-5a11-a94d-ebd21133af21","f670654d-fe6e-5167-98ed-bb9ce8bdae50","916a8f31-3d80-580e-8298-e58732f10992","07fe071f-9dd9-5d2f-a0d1-cb746f334b52","2d8c9a8a-db08-5c3b-b764-89088bca7005","1a51a635-61d6-5653-87b4-474472ee0c5c"]
+  },
+  {
+    "question": "What voice cloning feature is able to do?",
+    "id": ["c29e2a9f-b409-53d5-a9a0-0bb6234304b2","922c759c-7822-57ef-92ee-2b385a24ab3d","f83b2741-de9f-5705-a7b6-d1de8cc450b0","74a126cd-c5c7-5339-b474-451ffcd7e1f4","3f85b03d-fbc5-5894-b5fa-3a7cf0d5e1d8"]
+  },
+  {
+    "question": "Which AI company was sued?",
+    "id": ["b5fbc05b-e3b6-5735-b0dd-99e6acbf1388","e84fe81c-d1dd-5546-a869-0bd92ad541dd","a95fc3bd-a8a0-54b0-bbcf-8b78ec3726dd","0c19225c-c39d-5c26-bef2-6ed85581242a","b610bbdb-c676-50c1-8270-e34dc25ea49c","ad109da8-478e-5b08-83e6-a9784335e3e6","e4a65f71-35e6-5f1d-a10b-a7c7d3983fc0","f34366db-50db-501d-94de-0804dcfef1a1"]
+  },
+  {
+    "question": "How much do companies spend money for their projects?",
+    "id": ["5d3bb80b-8e9a-50ee-ab6c-ab179d3078c6","40b765b0-b7fc-5b9c-8901-1add4d4a0f70","9308f6be-f90d-519a-ace1-3cfd8fe21876","039720a7-75cf-5834-88ae-5709fb2f6daa","f34366db-50db-501d-94de-0804dcfef1a1","0613c551-1754-5cf8-a11b-a0b6892e1697","797fdb86-a222-56ba-afc2-2da8c9f73e2f","5ca585b2-ad37-5175-9c9f-4babbb7376fa"]
+  },
+  {
+    "question": "How much money do startups raise?",
+    "id": ["5c61c061-7f21-5e69-a3fb-9d6e2d3578b6","e9383f82-2155-5a2e-a83b-bb63fb27518f","dde92f70-71da-54dc-9c67-0d9630ca183e","039720a7-75cf-5834-88ae-5709fb2f6daa","d906c82f-3944-530d-82e6-b3f917d6adaf","3e59cc58-b85e-57a7-930b-a45cd0abf88d","7d87ec79-615a-5eb9-85b9-94b1c1c4c1fc"]
+  },
+  {
+    "question": "Which problems do AI models face?",
+    "id": ["26e720e0-bcce-5cb1-9184-503068109b40","60b52509-cbff-5af2-ba11-1de59f78c8e1","3abe042f-2731-5b7b-a442-c8f0177a6f7b","9c5a96c1-0495-5f9e-bd16-248998bc12bb","84f37c4a-c477-507f-a755-6e30df92a43d","cc68b98a-874b-535b-9724-395d4960b656","07fe071f-9dd9-5d2f-a0d1-cb746f334b52","9ccb4281-0ba2-5dd7-a8bf-82976bd51961","adebe9af-d4c4-5c94-943a-f58231bbeb12"]
+  },
+  {
+    "question": "What new hardware has AMD debuted with?",
+    "id": ["828393c1-f8ba-5b4f-a0a4-b35f8c2a022c","eb17f839-22c4-5c8e-ab21-32f423d32aa2","dd586a51-5c78-57a7-ac95-f130c7f0d3fd", "27a943f3-1558-5e0c-86d3-7203b051a7b9", "f6005590-2389-5286-930d-adf34aae940c","c6cf1538-226d-59f8-8b1d-66abd5a51f69"]
+  },
+  {
+    "question": "How much money did Intel receive?",
+    "id": ["2f71d529-ef04-553e-a73a-a175e4c639e7","ea986eb5-23ad-5ed0-a3b4-6f36a6ac7909","637db21c-4c62-55cf-a9c6-1cc12ef32a34", "02d0b296-efb8-5cbe-9249-890db7b02b7f", "a4fef49e-632a-5d54-a8d8-7a02f9b21012","475e7487-037b-504a-aaa1-61ff4b388ee3","f2138812-2636-57be-9190-f173f7337bda","918746bb-5eb7-5ca2-b1a8-947ea2f298a6"]
+  },
+  {
+    "question": "What new hardware has Intel debuted with?",
+    "id": ["86c8119f-0b80-571d-b7e4-c5e9c04536af","85b2b47c-1ba7-59af-a84d-6d1eb5a7a7a7","821d70b8-720d-5430-8fe5-3f679ffdfdc7","ed6f3aa0-07bc-519e-b76a-aa79dc04b0a7"]
+  },
+  {
+    "question": "What AI projects does Intel have?",
+    "id": ["37a492b6-d044-52ae-b79c-860babf65e56","839a7224-9b6d-5b0d-a16a-b1c04457d1ef","2f71d529-ef04-553e-a73a-a175e4c639e7"]
+  },
+  {
+    "question": "What companies had put a new CEO in charge?",
+    "id": ["86c8119f-0b80-571d-b7e4-c5e9c04536af","eaabe8ee-5ec9-5940-abd6-913fe4176e76","1c7f2cc4-5605-5c77-ae6e-d1163107b46e","c608e6a5-80b7-557c-8e1b-108af14d5b84","eb819525-77ac-5a60-9cbf-78d993d52ee9","c95d6aee-7cad-50b2-9412-fed8a595088b", "bd8b744e-9855-5b84-bd08-c00164629545"]
+  },
+  {
+    "question": "What new abilities has AI technology offered?",
+    "id":["bcc8061f-9604-536c-bfe2-bde05f568b5e","f5cad659-14ab-55ae-b875-a2e009a77f8e","abba2be4-4b08-50f6-9e08-816b5bcda124","26a13d66-152b-5969-93e9-41e0b7b5c9aa", "57c9e8b1-1d91-5d22-af7f-9a64fa0548e6", "b8f70442-b2cf-5a86-9579-cb286d041c4d"
+    ]
+  },
+  {
+    "question": "Who wants to invest new data centers?",
+    "id":["5ca585b2-ad37-5175-9c9f-4babbb7376fa","40efea5f-e38f-5cc8-92de-4f0ae0b01b9c","5893e2ad-4507-5d93-a4e9-2bd9e46258ca", "18836cd0-9ef9-58c8-ba55-63bde7791d44","f17c769c-ad2c-52a3-a22f-bd51bf2a461e","000700ed-8504-563c-83bc-9c71617ed59b","ccea5777-a777-5176-a512-f898968e4743","621bdb65-aa82-5bac-8695-8e06149e4722","90a56b00-99c1-5f12-bfaa-470fa3112a1f","9907a478-3cff-5940-b068-79cc83e71500","d2810a6f-875b-56bd-8ef4-72a334307d65","f298e262-318d-5713-838e-49710f3574cd"]
+  },
+  {
+    "question": "How much money do companies invest in data centers?",
+    "id":["5ca585b2-ad37-5175-9c9f-4babbb7376fa","12699eef-6e7f-546c-9c53-f388cae2d7c4","019d18b8-694d-5c68-8083-fbc462193fc3","18836cd0-9ef9-58c8-ba55-63bde7791d44", "6be2588d-16a3-58f7-8903-10093874012b","9907a478-3cff-5940-b068-79cc83e71500"]
+  },
+  {
+    "question": "How much electricity do data centers need?",
+    "id":["5893e2ad-4507-5d93-a4e9-2bd9e46258ca","db694249-3f0e-5887-babd-5488367a5ba1","621bdb65-aa82-5bac-8695-8e06149e4722","812a0083-3676-5b33-83bf-0a5ddfe8e6ad", "2af7178c-6c33-53cd-8303-0c6da1489885","d2810a6f-875b-56bd-8ef4-72a334307d65","f298e262-318d-5713-838e-49710f3574cd"]
+  },
+  {
+    "question": "How much money do startups raise?",
+    "id":["5c61c061-7f21-5e69-a3fb-9d6e2d3578b6","e9383f82-2155-5a2e-a83b-bb63fb27518f","039720a7-75cf-5834-88ae-5709fb2f6daa","dde92f70-71da-54dc-9c67-0d9630ca183e","d4a9d44a-bc79-5943-b19d-00ffd9c4a001","acbd7fff-5d27-5cf6-9a4b-526615b255a4","230de169-ca0e-5779-9b89-c04aaaf92a11","c6d255f3-f44d-5f9a-a0c3-88174cd9abac","8585204f-058d-5b9f-9ac6-ce52696eae3a","c0578690-8bb0-561e-b435-c6560cbf279e","f7594435-b89c-5703-9e17-8543a1e3a0b8","85ab68a5-0006-5588-9e46-8b4160f2cb27","819db8e8-f334-59d7-9051-3c764ce2be31","beffc5de-fc67-591c-928f-905f91152acc","0c61c822-ff43-5edf-9256-c30d928378e0","40cbec77-92b7-50fd-b9fc-0c06d5ae431a","dbfe5e86-10e5-50d6-ad8f-7e46afdd683e","af3a6bd4-eb71-5144-a7db-726b72854d62"]
+  },
+  {
+    "question": "For how much money was the startup bought?",
+    "id":["230de169-ca0e-5779-9b89-c04aaaf92a11","26a13d66-152b-5969-93e9-41e0b7b5c9aa","14cd2ce4-2d54-5056-8d24-ffa1196871fe"]
+  },
+  {
+    "question": "What ideas stand behind new startups?",
+    "id":["3c149b41-0638-5aeb-a5b1-227f8596ed5a", "82a4d454-b046-52d7-8414-3a892af40c25", "cb89e924-c496-56f4-9cfb-18cf8cd2fdca", "01f04524-8b81-5210-9476-a4eb7c9ed660", "4f2c3a99-04ed-56e4-a410-b99559f74c7a"]
+  },
+  {
+    "question": "What is new about OpenAI staff?",
+    "id":["26a13d66-152b-5969-93e9-41e0b7b5c9aa", "40b765b0-b7fc-5b9c-8901-1add4d4a0f70", "1aecd534-13a9-597f-b5ec-cc79ae6ba8e9", "9609207a-e462-5682-b3ef-7821b972fd7e", "f17c769c-ad2c-52a3-a22f-bd51bf2a461e"]
+  },
+  {
+    "question": "What deals has OpenAI signed?",
+    "id":["26a13d66-152b-5969-93e9-41e0b7b5c9aa", "40b765b0-b7fc-5b9c-8901-1add4d4a0f70", "1aecd534-13a9-597f-b5ec-cc79ae6ba8e9", "9609207a-e462-5682-b3ef-7821b972fd7e", "f17c769c-ad2c-52a3-a22f-bd51bf2a461e"]
+  },
+  {
+    "question": "What is Sora capable of?",
+    "id":["6503b26c-ebd3-5edf-8276-81d28b2d694b","aa0e8bb2-2390-5e84-a969-414d422f9e0b","36f72093-0447-5bce-9f59-e2964948e9f1","ef11ee3e-a3d2-59e8-b226-79195ae8b559"]
+  },
+  {
+    "question": "What is DeepSeek capable of?",
+    "id":["6c1cbea6-f2d9-5729-b51d-415fde9f638d", "9470e091-f857-5408-ab65-f7a5b94dbc5a", "f1dbe41b-6b3a-5ebe-a6c5-4fb53346d323", "86e18f6b-4803-5244-abbe-ab24232096cd", "5f6f5f73-ab53-50c1-a31c-dc17b3da28d9"]
+  },
+  {
+    "question": "What AI image generators exist at the market?",
+    "id":["db6c584c-b6ab-5c4f-9664-afc1a62e3bdd","03bd178f-fabe-5cbd-9135-520e5aef464c","b4039f87-9cbf-5acb-8349-aa2c160e9d18","ea95b91d-ee5a-5a98-b706-4de35c7695f4","08fcfc3c-da73-5ba8-8ea0-d03c2eaaef5d","3d0b0da0-6968-5688-97b6-95909427e1d0",
+    "66cfa60a-b994-53b3-bf0a-ec8b8f9ac285"]
+  }
+]

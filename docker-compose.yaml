@@ -1,0 +1,155 @@
+version: '3.8'
+
+services:
+  model-init:
+    build: .
+    command: python src/preload_models.py
+    environment:
+      - HF_HUB_CACHE=/models_cache
+      - HF_HUB_DOWNLOAD_TIMEOUT=600
+    volumes:
+      - ./models_cache:/models_cache
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - vector-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: redis-server --appendonly yes
+
+  qdrant:
+    image: qdrant/qdrant:v1.16.1
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - vector-network
+    entrypoint: >
+      sh -c "
+        if ! command -v curl &> /dev/null; then
+          apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+        fi
+        exec /qdrant/entrypoint.sh
+      "
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:6333/healthz" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/static:ro
+    networks:
+      - vector-network
+    depends_on:
+      api:
+        condition: service_started
+    restart: unless-stopped
+
+  api:
+    build: .
+    #ports:
+    #  - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - HF_HUB_CACHE=/models_cache
+      - HF_HUB_OFFLINE=1
+      - PYTHONPATH=/app
+      - DEBUG=False
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - vector-network
+    volumes:
+      - ./:/app
+      - ./models_cache:/models_cache
+      - ./temp_uploads:/tmp/celery_uploads
+    working_dir: /app
+    command: >
+      sh -c "
+        uvicorn main:app --host 0.0.0.0 --port 8000 
+      "
+
+  celery_worker:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - HF_HUB_CACHE=/models_cache
+      - HF_HUB_OFFLINE=1
+      - PYTHONPATH=/app
+    depends_on:
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    networks:
+      - vector-network
+    volumes:
+      - ./:/app
+      - ./models_cache:/models_cache
+      - ./temp_uploads:/tmp/celery_uploads
+    working_dir: /app
+    command: celery -A app.tasks.celery_app worker --loglevel=info -E -Q celery,indexing,upload,generation
+
+  flower:
+    image: mher/flower:2.0.1
+    ports:
+      - "5555:5555"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/1
+      - FLOWER_PORT=5555
+    depends_on:
+      redis:
+        condition: service_healthy
+      celery_worker:
+        condition: service_started
+    networks:
+      - vector-network
+    command: celery flower --broker=redis://redis:6379/1 --port=5555
+
+volumes:
+  qdrant_data:
+  redis_data:
+
+networks:
+  vector-network:
+    driver: bridge
