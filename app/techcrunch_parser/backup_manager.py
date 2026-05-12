@@ -20,7 +20,6 @@ class BackupManager:
 
         backups = list(self.backup_dir.glob("techcrunch_backup_*.json"))
         if backups:
-            # Берем самый свежий бэкап
             self.backup_file = max(backups, key=lambda x: x.stat().st_mtime)
             logger.info(f" Найден активный бэкап: {self.backup_file.name}")
 
@@ -60,30 +59,24 @@ class BackupManager:
         if not new_articles:
             return
 
-        # Загружаем существующие статьи
         existing_articles = self.load_backup() if self.has_backup() else []
 
-        # Получаем ID существующих статей
         existing_ids = {a['id'] for a in existing_articles}
 
-        # Добавляем только новые
         unique_new = [a for a in new_articles if a['id'] not in existing_ids]
 
         if not unique_new:
             logger.info("Все новые статьи уже есть в бэкапе")
             return
 
-        # Объединяем
         all_articles = existing_articles + unique_new
 
-        # Сохраняем
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = self.backup_dir / f"techcrunch_backup_{timestamp}_{len(all_articles)}.json"
 
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(all_articles, f, ensure_ascii=False, indent=2)
 
-        # Удаляем старый бэкап
         if self.backup_file and self.backup_file.exists():
             self.backup_file.unlink()
 

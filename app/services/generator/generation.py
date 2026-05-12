@@ -3,8 +3,8 @@ from typing import List, Dict, Any
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .prompt_build import PromptBuilder
-from .monitor import metrics
 from .semantic_cache import semantic_cache
+from .monitor import metrics
 from ..retrieval.search import retriever
 from app.core.generation_config import generation_config
 from .api_client import APIClient
@@ -98,11 +98,12 @@ class RAGGenerator:
                 cached_answer, score = semantic_cache.search(question)
                 if cached_answer:
                     metrics.cache_hits += 1
-                    metrics.end_timer(start_time)
+                    latency = metrics.end_timer(start_time)
                     return {
                         "question": question, "answer": cached_answer, "style": style,
                         "contexts_used": len(contexts) if contexts else 0, "cached": True,
-                        "mode": self.mode, **self._get_params(**params)
+                        "mode": self.mode, "latency_sec": round(latency, 4),
+                        **self._get_params(**params)
                     }
                 metrics.cache_misses += 1
 
@@ -112,17 +113,21 @@ class RAGGenerator:
             if use_cache and question and answer:
                 semantic_cache.save(question, answer)
 
-            metrics.end_timer(start_time)
+            latency = metrics.end_timer(start_time)
             return {
                 "question": question, "answer": answer, "style": style,
                 "contexts_used": len(contexts) if contexts else 0, "cached": False,
-                "mode": self.mode, **self._get_params(**params)
+                "mode": self.mode, "latency_sec": round(latency, 4),
+                **self._get_params(**params)
             }
         except Exception as e:
             metrics.errors += 1
-            metrics.end_timer(start_time)
-            return {"question": question, "answer": f"Error: {str(e)}", "style": style,
-                    "contexts_used": len(contexts) if contexts else 0, "error": str(e), "mode": self.mode}
+            latency = metrics.end_timer(start_time)
+            return {
+                "question": question, "answer": f"Error: {str(e)}", "style": style,
+                "contexts_used": len(contexts) if contexts else 0, "error": str(e),
+                "mode": self.mode, "latency_sec": round(latency, 4) if latency else 0
+            }
 
     def generate_with_retrieval(self, question: str, style: str = "detailed", use_cache: bool = True, **params) -> Dict[
         str, Any]:

@@ -1,5 +1,4 @@
 import os
-import tempfile
 from datetime import datetime
 import logging
 
@@ -145,6 +144,25 @@ def generate_answer_task(self, question: str, style: str = "detailed"):
             question=question,
             style=style
         )
+
+        try:
+            redis_client.client.hincrby("rag_metrics", "total_requests", 1)
+            redis_client.client.hincrbyfloat("rag_metrics", "total_latency", result.get("latency_sec", 0))
+
+            if result.get("cached"):
+                redis_client.client.hincrby("rag_metrics", "cache_hits", 1)
+            else:
+                redis_client.client.hincrby("rag_metrics", "cache_misses", 1)
+
+            redis_client.client.hset("rag_last_request", mapping={
+                "timestamp": datetime.now().isoformat(),
+                "question": question[:100],
+                "style": style,
+                "latency": result.get("latency_sec", 0),
+                "cached": result.get("cached", False)
+            })
+        except Exception as e:
+            logger.warning(f"Failed to save metrics: {e}")
 
         redis_client.set_task_status(
             task_id=task_id,

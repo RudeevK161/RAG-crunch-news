@@ -6,6 +6,30 @@ from app.api.schemas.task import TaskStatus
 router = APIRouter()
 
 
+@router.get("/metrics")
+async def get_metrics():
+    try:
+        metrics = redis_client.client.hgetall("rag_metrics")
+
+        total_requests = int(metrics.get("total_requests", 0))
+        total_latency = float(metrics.get("total_latency", 0))
+
+        avg_latency = total_latency / total_requests if total_requests else 0
+
+        return {
+            "total_requests": total_requests,
+            "avg_latency": round(avg_latency, 3),
+            "cache_hits": int(metrics.get("cache_hits", 0)),
+            "cache_misses": int(metrics.get("cache_misses", 0)),
+            "cache_hit_rate": round(
+                int(metrics.get("cache_hits", 0)) / total_requests, 3
+            ) if total_requests else 0
+        }
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
 @router.get("/{task_id}", response_model=TaskStatus)
 async def get_task_status(task_id: str):
     """Получить статус задачи по ID"""

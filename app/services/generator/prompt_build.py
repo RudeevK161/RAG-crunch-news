@@ -21,7 +21,6 @@ class PromptBuilder:
         if not contexts:
             return PromptBuilder._build_without_context(question, style)
 
-        # Форматирование контекста
         context_parts = []
         for i, ctx in enumerate(contexts, 1):
 
@@ -54,7 +53,24 @@ class PromptBuilder:
 **Comprehensive Answer:**"""
 
         else:  # concise
-            return f"""Based on the sources below, answer the question concisely.
+            return f"""Answer the question using ONLY the information from the sources.
+
+**STRICT RULES:**
+1. Use ONLY facts explicitly stated in the sources.
+2. Do NOT add assumptions, general knowledge, or interpretations.
+3. Copy all numbers, names, and specific details EXACTLY as written.
+4. Answer ONLY the question — do not include unrelated information.
+
+**STYLE:**
+- Be concise and precise.
+- Do not repeat the question.
+- Do not summarize the entire context.
+- Prefer short factual statements over long explanations.
+
+**PROCESS (follow internally):**
+- Identify the parts of the sources directly relevant to the question.
+- Ignore irrelevant information.
+- Extract and combine only the necessary facts.
 
 **Sources:**
 {context}

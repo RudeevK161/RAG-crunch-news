@@ -1,7 +1,9 @@
 import pickle
 import time
+import sys
 from typing import Set
-from .config import config
+
+from .config import parser_config
 from .logger import logger
 from .lock import file_lock
 from .parser import TechCrunchParser
@@ -27,8 +29,8 @@ class Pipeline:
                 self._save_cache(ids)
                 return ids
 
-        if config.CACHE_FILE.exists():
-            with open(config.CACHE_FILE, 'rb') as f:
+        if parser_config.CACHE_FILE.exists():
+            with open(parser_config.CACHE_FILE, 'rb') as f:
                 return pickle.load(f)
 
         if self.backup.has_backup():
@@ -38,7 +40,7 @@ class Pipeline:
         return set()
 
     def _save_cache(self, ids: Set[str]):
-        with open(config.CACHE_FILE, 'wb') as f:
+        with open(parser_config.CACHE_FILE, 'wb') as f:
             pickle.dump(ids, f)
 
     def _process_backup(self):
@@ -94,7 +96,6 @@ class Pipeline:
 
 
 def main():
-    import sys
 
     if len(sys.argv) > 1 and sys.argv[1] == "status":
         print(f"Qdrant: {'ok' if QdrantClient().is_available() else 'not'}")

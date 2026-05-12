@@ -3,14 +3,25 @@ from qdrant_client.models import VectorParams, Distance, PointStruct
 import uuid
 import time
 from sentence_transformers import SentenceTransformer
+
 from app.core.generation_config import generation_config
 from app.core.search_config import search_config
 
 
-model = SentenceTransformer(generation_config.SEM_MODEL_NAME)
+_semantic_model = None
+
+
+def _get_semantic_model():
+    """Загружает семантическую модель один раз, потом возвращает из глобальной переменной"""
+    global _semantic_model
+    if _semantic_model is None:
+        print(f"[semantic_cache] Loading semantic model: {generation_config.SEM_MODEL_NAME}")
+        _semantic_model = SentenceTransformer(generation_config.SEM_MODEL_NAME)
+    return _semantic_model
 
 
 def embed(text: str):
+    model = _get_semantic_model()
     return model.encode(text, normalize_embeddings=True)
 
 

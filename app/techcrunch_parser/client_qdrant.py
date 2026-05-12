@@ -3,7 +3,7 @@ from typing import List, Set, Dict
 from qdrant_client import QdrantClient as QClient
 from qdrant_client.models import PointStruct, VectorParams, Distance
 from .logger import logger
-from .config import config
+from app.core.search_config import search_config
 
 
 class QdrantClient:
@@ -13,7 +13,7 @@ class QdrantClient:
 
     def _connect(self):
         try:
-            self.client = QClient(host=config.QDRANT_HOST, port=config.QDRANT_PORT, timeout=10)
+            self.client = QClient(host=search_config.QDRANT_HOST, port=search_config.QDRANT_PORT, timeout=10)
             self.client.get_collections()
             logger.info(f"Qdrant подключен")
             self._ensure_collection()
@@ -26,12 +26,12 @@ class QdrantClient:
             return
         try:
             collections = self.client.get_collections().collections
-            if config.QDRANT_COLLECTION not in [c.name for c in collections]:
+            if search_config.QDRANT_COLLECTION not in [c.name for c in collections]:
                 self.client.create_collection(
-                    collection_name=config.QDRANT_COLLECTION,
-                    vectors_config=VectorParams(size=config.VECTOR_SIZE, distance=Distance.COSINE)
+                    collection_name=search_config.QDRANT_COLLECTION,
+                    vectors_config=VectorParams(size=search_config.EMBEDDING_SIZE, distance=Distance.COSINE)
                 )
-                logger.info(f"Коллекция {config.QDRANT_COLLECTION} создана")
+                logger.info(f"Коллекция {search_config.QDRANT_COLLECTION} создана")
         except Exception as e:
             logger.error(f"Ошибка создания коллекции: {e}")
 
@@ -44,7 +44,7 @@ class QdrantClient:
             return set()
         try:
             scroll_result = self.client.scroll(
-                collection_name=config.QDRANT_COLLECTION,
+                collection_name=search_config.QDRANT_COLLECTION,
                 limit=limit,
                 with_payload=True,
                 with_vectors=False
@@ -58,6 +58,7 @@ class QdrantClient:
         except Exception as e:
             logger.error(f"Ошибка загрузки ID: {e}")
             return set()
+
 
     def save_chunks(self, points: List[Dict], embeddings: List[List[float]]) -> int:
         """
@@ -75,10 +76,8 @@ class QdrantClient:
             logger.error(f"Несоответствие: {len(points)} точек, {len(embeddings)} эмбеддингов")
             return 0
 
-        # Создаем точки для Qdrant
         qdrant_points = []
         for point_data, embedding in zip(points, embeddings):
-            # Генерируем уникальный ID для чанка
             point_id = abs(hash(point_data['chunk_id'])) % (2 ** 31 - 1)
 
             qdrant_points.append(PointStruct(
@@ -98,7 +97,6 @@ class QdrantClient:
                 }
             ))
 
-        # Сохраняем батчами
         batch_size = 50
         saved = 0
 
@@ -106,7 +104,7 @@ class QdrantClient:
             batch = qdrant_points[i:i + batch_size]
             try:
                 self.client.upsert(
-                    collection_name=config.QDRANT_COLLECTION,
+                    collection_name=search_config.QDRANT_COLLECTION,
                     points=batch,
                     wait=False
                 )
@@ -116,7 +114,6 @@ class QdrantClient:
             except Exception as e:
                 logger.error(f"Ошибка сохранения батча: {e}")
 
-        # Выводим статистику
         articles_saved = len(set(p['document_id'] for p in points))
         total_chunks = len(points)
         logger.info(f"Сохранено {articles_saved} статей ({total_chunks} чанков) в Qdrant")

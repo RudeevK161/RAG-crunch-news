@@ -2,7 +2,7 @@ import portalocker
 from contextlib import contextmanager
 from pathlib import Path
 from .logger import logger
-from .config import config
+from .config import parser_config
 
 
 @contextmanager
@@ -15,14 +15,12 @@ def file_lock(lock_file: str = None):
             # ваш код
     """
     if lock_file is None:
-        lock_file = config.LOCK_FILE
+        lock_file = parser_config.LOCK_FILE
 
-    # Создаем директорию если её нет
     Path(lock_file).parent.mkdir(parents=True, exist_ok=True)
 
     lock_fd = open(lock_file, 'w')
     try:
-        # Пытаемся получить блокировку
         portalocker.lock(lock_fd, portalocker.LOCK_EX | portalocker.LOCK_NB)
         logger.info(f"Блокировка получена: {lock_file}")
         yield lock_fd

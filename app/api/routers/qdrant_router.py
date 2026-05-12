@@ -1,95 +1,15 @@
 from qdrant_client import models
-import sys
-import os
-import uuid
-from fastapi import APIRouter, Form, UploadFile, File, HTTPException
+from fastapi import APIRouter, HTTPException
 import logging
-from datetime import datetime
+import os
 
 from src.setup_qdrant import *
-from app.tasks.tasks import upload_pickle_task
-from app.tasks.redis_client import redis_client
 from src.bm25.bm25_utils import get_qdrant_client
 
 logger = logging.getLogger(__name__)
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..', '..'))
 
 router = APIRouter()
-
-
-@router.post("/upload")
-async def upload_simple(
-        collection: str = Form(...),
-        vector_size: int = Form(384),
-        distance: str = Form("Cosine"),
-        pickle_file: UploadFile = File(...),
-        batch_size: int = Form(100),
-        force_recreate: bool = Form(False)
-):
-    """
-    Загрузка данных из pickle файла в Qdrant коллекцию
-    """
-    temp_path = None
-    file_size = 0
-    try:
-        if not pickle_file.filename.endswith('.pkl'):
-            raise HTTPException(
-                status_code=400,
-                detail="Файл должен иметь расширение .pkl"
-            )
-
-        temp_dir = "/tmp/celery_uploads"
-        os.makedirs(temp_dir, exist_ok=True)
-
-        unique_name = f"{uuid.uuid4()}_{pickle_file.filename}"
-        temp_path = os.path.join(temp_dir, unique_name)
-
-        with open(temp_path, "wb") as tmp:
-            while chunk := await pickle_file.read(8192):
-                tmp.write(chunk)
-                file_size += len(chunk)
-
-        task = upload_pickle_task.delay(
-            pickle_file_path=temp_path,
-            collection_name=collection,
-            vector_size=vector_size,
-            distance=distance,
-            batch_size=batch_size,
-            force_recreate=force_recreate
-        )
-
-        redis_client.set_task_status(
-            task_id=task.id,
-            status="pending",
-            task_type="upload",
-            collection_name=collection,
-            filename=pickle_file.filename,
-            file_size=file_size,
-            vector_size=vector_size,
-            distance=distance,
-            batch_size=batch_size,
-            created_at=datetime.now().isoformat()
-        )
-
-        return {
-            "status": "accepted",
-            "mode": "async",
-            "task_id": task.id,
-            "collection": collection,
-            "filename": pickle_file.filename,
-            "message": "Загрузка запущена асинхронно",
-            "check_status_url": f"/api/v1/task/{task.id}"
-        }
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        if temp_path and os.path.exists(temp_path):
-            try:
-                os.unlink(temp_path)
-            except:
-                pass
-        raise HTTPException(status_code=500, detail=f"Ошибка загрузки: {str(e)}")
 
 
 @router.get("/collections")

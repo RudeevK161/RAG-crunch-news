@@ -12,6 +12,19 @@ from app.core.search_config import search_config
 logger = logging.getLogger("techcrunch_search")
 logger.setLevel(logging.INFO)
 
+_embedding_model = None
+
+
+def _get_embedding_model(model_name: str):
+    """Загружает модель один раз, потом возвращает из глобальной переменной"""
+    global _embedding_model
+    if _embedding_model is None:
+        print(f"[retriever] Loading embedding model: {model_name}")
+        _embedding_model = SentenceTransformer(model_name)
+        if torch.cuda.is_available():
+            _embedding_model.to("cuda")
+    return _embedding_model
+
 
 def retriever(
         query: str,
@@ -39,12 +52,13 @@ def retriever(
     model_name = model_name or search_config.EMBEDDING_MODEL
     freshness_weight = freshness_weight or search_config.DEFAULT_FRESHNESS_WEIGHT
     relevance_weight = relevance_weight or search_config.DEFAULT_RELEVANCE_WEIGHT
+    top_k = top_k or search_config.DEFAULT_TOP_K
 
     logger.info(f"Поиск: {query[:50]}... | top_k={top_k}")
 
     client = QdrantClient(host=search_config.QDRANT_HOST, port=search_config.QDRANT_PORT, timeout=10)
 
-    model = SentenceTransformer(model_name)
+    model = _get_embedding_model(model_name)
     if torch.cuda.is_available():
         model.to("cuda")
 
@@ -64,13 +78,17 @@ def retriever(
         relevance = point.score
 
         freshness = 0.5
-        published = point.payload.get('published_date')
+        published = point.payload.get("published_time")
         if published:
             try:
+                if isinstance(published, dict):
+                    published = published.get("raw")
+
                 days = (now - datetime.strptime(published, "%Y-%m-%d")).days
                 freshness = np.exp(-days / max_days)
-            except:
-                pass
+            except Exception as e:
+                print(f"Ошибка парсинга даты {published}: {e}")
+                freshness = 0.5
 
         combined = relevance_weight * relevance + freshness_weight * freshness
 
@@ -78,7 +96,7 @@ def retriever(
             'title': point.payload.get('title', ''),
             'url': point.payload.get('url', ''),
             'published_date': published,
-            'text_preview': point.payload.get('chunk_text', '')[:300],
+            'text_preview': point.payload.get('text', '')[:350],
             'score': combined,
             'relevance': relevance,
             'freshness': freshness

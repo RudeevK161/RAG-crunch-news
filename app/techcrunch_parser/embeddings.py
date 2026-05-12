@@ -1,10 +1,9 @@
 import re
 import torch
-from pathlib import Path
 from typing import List, Tuple
 from sentence_transformers import SentenceTransformer
 from .logger import logger
-from .config import config, MODELS_DIR
+from app.core.search_config import search_config
 
 
 class TextChunker:
@@ -23,13 +22,9 @@ class TextChunker:
 
     def split_into_paragraphs(self, text: str) -> List[str]:
         """Разбивает текст на абзацы"""
-        # Ищем пустые строки (два и более переноса строки)
         paragraphs = re.split(r'\n\s*\n', text.strip())
-
-        # Фильтруем пустые абзацы
         paragraphs = [p.strip() for p in paragraphs if p.strip()]
 
-        # Если абзацев не найдено, разбиваем по одинарным переносам
         if len(paragraphs) <= 1:
             paragraphs = [p.strip() for p in text.split('\n') if p.strip()]
 
@@ -46,15 +41,12 @@ class TextChunker:
         for para in paragraphs:
             para_size = len(para)
 
-            # Если абзац сам по себе больше max_size, разбиваем его
             if para_size > self.max_chunk_size:
-                # Сохраняем текущий чанк если есть
                 if current_chunk:
                     chunks.append('\n\n'.join(current_chunk))
                     current_chunk = []
                     current_size = 0
 
-                # Разбиваем большой абзац на предложения
                 sentences = re.split(r'(?<=[.!?])\s+', para)
                 temp_chunk = []
                 temp_size = 0
@@ -63,7 +55,6 @@ class TextChunker:
                     sent_size = len(sent)
                     if temp_size + sent_size > self.max_chunk_size and temp_chunk:
                         chunks.append(' '.join(temp_chunk))
-                        # Добавляем перекрытие
                         overlap_text = temp_chunk[-1] if temp_chunk else ''
                         temp_chunk = [overlap_text, sent] if overlap_text else [sent]
                         temp_size = len(overlap_text) + sent_size if overlap_text else sent_size
@@ -74,13 +65,10 @@ class TextChunker:
                 if temp_chunk:
                     chunks.append(' '.join(temp_chunk))
 
-            # Если добавление абзаца превысит лимит
             elif current_size + para_size + 2 > self.max_chunk_size:
-                # Сохраняем текущий чанк
                 if current_chunk:
                     chunks.append('\n\n'.join(current_chunk))
 
-                # Начинаем новый чанк с перекрытием
                 overlap_text = current_chunk[-1] if current_chunk else ''
                 if overlap_text and len(overlap_text) <= self.overlap:
                     current_chunk = [overlap_text, para]
@@ -89,11 +77,9 @@ class TextChunker:
                     current_chunk = [para]
                     current_size = para_size
             else:
-                # Добавляем абзац в текущий чанк
                 current_chunk.append(para)
                 current_size += para_size + 2
 
-        # Добавляем последний чанк
         if current_chunk:
             chunks.append('\n\n'.join(current_chunk))
 
@@ -129,7 +115,7 @@ class EmbeddingGenerator:
     def _init_model(self):
         """Инициализация модели с автоматическим определением устройства"""
         try:
-            # Определяем лучшее доступное устройство
+            # Определяем устройство
             if torch.cuda.is_available():
                 self._device = "cuda"
                 logger.info(f"GPU доступен: {torch.cuda.get_device_name(0)}")
@@ -140,18 +126,11 @@ class EmbeddingGenerator:
                 self._device = "cpu"
                 logger.info("Использую CPU")
 
-            # Загружаем модель из кэша или скачиваем
-            model_path = self._get_model_path()
+            # Загружаем модель (HF сам управляет кэшем через HF_HUB_CACHE)
+            model_name = search_config.EMBEDDING_MODEL
+            logger.info(f"Загрузка модели: {model_name}")
 
-            if model_path.exists():
-                logger.info(f"Загружаю модель из кэша: {model_path}")
-                self._model = SentenceTransformer(str(model_path))
-            else:
-                logger.info(f"Скачиваю модель: {config.EMBEDDING_MODEL}")
-                self._model = SentenceTransformer(config.EMBEDDING_MODEL)
-                self._save_model_to_cache(model_path)
-
-            # Перемещаем на GPU если возможно
+            self._model = SentenceTransformer(model_name)
             self._model.to(self._device)
 
             # Прогрев модели
@@ -166,20 +145,6 @@ class EmbeddingGenerator:
             self._model = None
             self._device = "cpu"
 
-    def _get_model_path(self) -> Path:
-        """Возвращает путь для кэширования модели"""
-        model_name = config.EMBEDDING_MODEL.replace('/', '_')
-        return MODELS_DIR / model_name
-
-    def _save_model_to_cache(self, path: Path):
-        """Сохраняет модель в кэш"""
-        try:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            self._model.save(str(path))
-            logger.info(f"Модель сохранена в кэш: {path}")
-        except Exception as e:
-            logger.warning(f"Не удалось сохранить модель в кэш: {e}")
-
     def is_available(self) -> bool:
         return self._model is not None
 
@@ -189,7 +154,7 @@ class EmbeddingGenerator:
             "model_loaded": self._model is not None,
             "cuda_available": torch.cuda.is_available(),
             "cuda_device_name": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
-            "model_name": config.EMBEDDING_MODEL
+            "model_name": search_config.EMBEDDING_MODEL
         }
 
     def generate_embeddings_for_chunks(self, chunks: List[str]) -> List[List[float]]:
@@ -208,7 +173,6 @@ class EmbeddingGenerator:
         if not chunks:
             return []
 
-        # Генерируем эмбеддинги батчами для оптимизации
         batch_size = 32
         all_embeddings = []
 
@@ -248,21 +212,14 @@ class ArticleEmbeddingProcessor:
         Returns:
             tuple: (список чанков-словарей для Qdrant, список эмбеддингов для этих чанков)
         """
-        # 1. Разбиваем текст на чанки
         chunks = self.embedder.chunker.chunk_text(article['text'])
 
         if not chunks:
-            # Если не удалось разбить, используем весь текст как один чанк
             chunks = [article['text'][:1500]]
 
-        # 2. Добавляем заголовок к первому чанку для контекста
         if chunks:
             chunks[0] = f"Title: {article['title']}\n\n{chunks[0]}"
-
-        # 3. Генерируем эмбеддинг для КАЖДОГО чанка (отдельно!)
         chunk_embeddings = self.embedder.generate_embeddings_for_chunks(chunks)
-
-        # 4. Создаем точки для Qdrant (по одной на каждый чанк)
         points = []
         for i, (chunk, embedding) in enumerate(zip(chunks, chunk_embeddings)):
             point = {
@@ -303,4 +260,3 @@ class ArticleEmbeddingProcessor:
                 logger.error(f"Ошибка обработки статьи {article.get('title', 'unknown')}: {e}")
 
         return all_points, all_embeddings
-

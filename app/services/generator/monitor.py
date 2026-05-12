@@ -13,7 +13,9 @@ class Metrics:
         return time.time()
 
     def end_timer(self, start):
-        self.total_latency += time.time() - start
+        latency = time.time() - start
+        self.total_latency += latency
+        return latency
 
     def get(self):
         avg_latency = (
@@ -34,5 +36,6 @@ class Metrics:
             "errors": self.errors,
             "avg_latency_sec": round(avg_latency, 4)
         }
+
 
 metrics = Metrics()

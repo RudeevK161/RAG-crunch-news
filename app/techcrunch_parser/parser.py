@@ -6,7 +6,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from typing import List, Dict, Set
 from .logger import logger
-from .config import config
+from .config import parser_config
 
 
 def extract_full_article_text(session, url):
@@ -20,11 +20,9 @@ def extract_full_article_text(session, url):
 
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Удаляем ненужные элементы
         for element in soup.select('script, style, iframe, nav, footer, .advertisement, .share-buttons, .comments'):
             element.decompose()
 
-        # Пробуем разные селекторы для основного контента
         content_selectors = [
             '.article-content',
             '.entry-content',
@@ -54,7 +52,6 @@ def extract_full_article_text(session, url):
                     if len(full_text) > 300:
                         return full_text
 
-        # Резервный метод: все параграфы в статье
         article_tag = soup.find('article')
         if article_tag:
             paragraphs = article_tag.find_all('p')
@@ -82,7 +79,7 @@ class TechCrunchParser:
     def _init_session(self):
         """Инициализация сессии"""
         self.session = requests.Session()
-        self.session.headers.update(config.HEADERS)
+        self.session.headers.update(parser_config.HEADERS)
 
     def parse_articles(self, existing_ids: Set[str]) -> List[Dict]:
         """
@@ -96,16 +93,14 @@ class TechCrunchParser:
         """
         logger.info("=" * 60)
         logger.info("Начинаю парсинг пагинации TechCrunch AI...")
-        logger.info(f"Цель: {config.TARGET_ARTICLES} статей")
+        logger.info(f"Цель: {parser_config.TARGET_ARTICLES} статей")
         logger.info("=" * 60)
 
-        all_articles = {}  # url -> article_data
+        all_articles = {}
         page = 1
-        stop_parsing = False  # Флаг для остановки парсинга страниц
+        stop_parsing = False
 
-        # ЭТАП 1: Собираем ссылки на статьи (без текста)
-        while len(all_articles) < config.TARGET_ARTICLES and page <= config.MAX_PAGES and not stop_parsing:
-            # Формируем URL страницы
+        while len(all_articles) < parser_config.TARGET_ARTICLES and page <= parser_config.MAX_PAGES and not stop_parsing:
             if page == 1:
                 url = "https://techcrunch.com/category/artificial-intelligence/"
             else:
@@ -128,7 +123,6 @@ class TechCrunchParser:
 
                 soup = BeautifulSoup(response.content, 'html.parser')
 
-                # Находим все статьи на странице
                 article_elements = soup.find_all('li', class_='wp-block-post')
 
                 if not article_elements:
@@ -146,11 +140,10 @@ class TechCrunchParser:
                 articles_on_page = 0
 
                 for article_element in article_elements:
-                    if len(all_articles) >= config.TARGET_ARTICLES:
+                    if len(all_articles) >= parser_config.TARGET_ARTICLES:
                         break
 
                     try:
-                        # Извлекаем ссылку
                         link_element = article_element.select_one('a.loop-card__title-link')
 
                         if not link_element:
@@ -172,25 +165,19 @@ class TechCrunchParser:
                         if not article_url.startswith('http'):
                             article_url = 'https://techcrunch.com' + article_url
 
-                        # Генерируем ID
                         article_id = str(uuid.uuid5(uuid.NAMESPACE_URL, article_url))
 
-                        # Проверяем существование
                         if article_id in existing_ids:
-                            # Если нашли существующую статью НЕ на первой странице - останавливаемся
                             if page > 1:
                                 logger.info(f"Найдена существующая статья, останавливаю сбор ссылок")
                                 stop_parsing = True
                                 break
                             else:
-                                # На первой странице просто пропускаем
                                 continue
 
-                        # Проверяем дубликаты в текущей сессии
                         if article_url in all_articles:
                             continue
 
-                        # Извлекаем заголовок
                         title_element = article_element.select_one('.loop-card__title')
                         if not title_element:
                             title_element = link_element
@@ -200,14 +187,12 @@ class TechCrunchParser:
                         if not article_title:
                             continue
 
-                        # Извлекаем дату из URL
                         date_from_url = article_url.split('/')[3:6]
                         if date_from_url and date_from_url[0][:2] == '20':
                             published_date = '-'.join(date_from_url)
                         else:
                             published_date = datetime.now().strftime('%Y-%m-%d')
 
-                        # Добавляем статью (без текста пока)
                         all_articles[article_url] = {
                             "id": article_id,
                             "title": article_title,
@@ -223,9 +208,8 @@ class TechCrunchParser:
                         continue
 
                 logger.info(f"На странице {page} добавлено статей: {articles_on_page}")
-                logger.info(f"Всего собрано: {len(all_articles)}/{config.TARGET_ARTICLES}")
+                logger.info(f"Всего собрано: {len(all_articles)}/{parser_config.TARGET_ARTICLES}")
 
-                # Проверяем следующую страницу (только если не остановлены)
                 if not stop_parsing:
                     next_page_link = soup.select_one('.wp-block-query-pagination-next, a[rel="next"]')
                     if not next_page_link and len(article_elements) < 10:
@@ -242,7 +226,6 @@ class TechCrunchParser:
                 logger.error(f"Критическая ошибка на странице {page}: {e}")
                 break
 
-        # ЭТАП 2: Получаем полный текст для всех собранных статей
         if not all_articles:
             logger.info("Нет статей для обработки")
             return []
@@ -255,14 +238,12 @@ class TechCrunchParser:
             try:
                 logger.info(f"[{i}/{len(all_articles)}] Получаю текст: {article_data['title'][:60]}...")
 
-                # Получаем полный текст
                 full_text = extract_full_article_text(self.session, article_url)
 
                 if not full_text or len(full_text) < 500:
                     logger.warning(f"  Текст слишком короткий или не найден")
                     continue
 
-                # Добавляем текст
                 article_data["text"] = full_text
                 article_data["word_count"] = len(full_text.split())
                 article_data["parsed_at"] = datetime.now().isoformat()

@@ -15,6 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 
 COPY ./app ./app
 COPY ./src ./src
+COPY ./admin_panel ./admin_panel
 COPY ./main.py .
 
 ENV PYTHONPATH=/app

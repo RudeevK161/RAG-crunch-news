@@ -4,7 +4,6 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
 import logging
 
-from app.core.generation_config import generation_config
 from app.core.search_config import search_config
 from src.dense.data_prep import TextChunker
 
@@ -20,12 +19,12 @@ def index_documents_to_qdrant_dense(
 ) -> Dict[str, Any]:
 
     client = QdrantClient(
-        host=generation_config.QDRANT_HOST,
-        port=generation_config.QDRANT_PORT
+        host=search_config.QDRANT_HOST,
+        port=search_config.QDRANT_PORT
     )
 
-    model = SentenceTransformer(generation_config.EMBEDDING_MODEL)
-    embedding_size = generation_config.EMBEDDING_SIZE
+    model = SentenceTransformer(search_config.EMBEDDING_MODEL)
+    embedding_size = search_config.EMBEDDING_SIZE
     chunk_size = search_config.CHUNK_SIZE
     chunk_overlap = search_config.CHUNK_SIZE_OVERLAP
     chunker = TextChunker(max_chunk_size=chunk_size, overlap=chunk_overlap)
@@ -46,7 +45,6 @@ def index_documents_to_qdrant_dense(
     )
     logger.info(f"Коллекция {collection_name} создана с размером {embedding_size}")
 
-    # Подготовка документов
     docs = data if isinstance(data, list) else data.get('documents', data.get('articles', [data]))
     docs = docs[:max_docs] if max_docs else docs
     logger.info(f"Документов для обработки: {len(docs)}")

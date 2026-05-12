@@ -53,13 +53,10 @@ class TextChunker:
                 if temp_chunk:
                     chunks.append(' '.join(temp_chunk))
 
-            # Если добавление абзаца превысит лимит
             elif current_size + para_size + 2 > self.max_chunk_size:
-                # Сохраняем текущий чанк
                 if current_chunk:
                     chunks.append('\n\n'.join(current_chunk))
 
-                # Начинаем новый чанк с перекрытием
                 overlap_text = current_chunk[-1] if current_chunk else ''
                 if overlap_text and len(overlap_text) <= self.overlap:
                     current_chunk = [overlap_text, para]
@@ -68,11 +65,9 @@ class TextChunker:
                     current_chunk = [para]
                     current_size = para_size
             else:
-                # Добавляем абзац в текущий чанк
                 current_chunk.append(para)
                 current_size += para_size + 2
 
-        # Добавляем последний чанк
         if current_chunk:
             chunks.append('\n\n'.join(current_chunk))
 

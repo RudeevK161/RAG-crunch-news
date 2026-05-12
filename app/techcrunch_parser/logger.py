@@ -9,23 +9,20 @@ def setup_logger(name: str = "techcrunch_parser") -> logging.Logger:
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
 
-    # Форматтер
     formatter = logging.Formatter(
         '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
-    # Хендлер для файла (с ротацией)
     log_file = LOGS_DIR / "parser.log"
     file_handler = RotatingFileHandler(
         log_file,
-        maxBytes=10 * 1024 * 1024,  # 10MB
+        maxBytes=10 * 1024 * 1024,
         backupCount=5
     )
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
-    # Хендлер для консоли
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)

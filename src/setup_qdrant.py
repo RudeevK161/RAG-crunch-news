@@ -2,7 +2,6 @@ import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import VectorParams, Distance, PointStruct
 import joblib
-import sys
 
 
 def upload_pickle_to_qdrant(
