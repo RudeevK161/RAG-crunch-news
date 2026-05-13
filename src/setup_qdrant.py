@@ -2,6 +2,37 @@ import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import VectorParams, Distance, PointStruct
 import joblib
+import time
+import logging
+from app.core.search_config import search_config
+
+logger = logging.getLogger(__name__)
+
+
+def get_qdrant_client():
+    """Создание клиента Qdrant с правильными параметрами"""
+    host = search_config.QDRANT_HOST
+    port = search_config.QDRANT_PORT
+
+    logger.info(f"Connecting to Qdrant at {host}:{port}")
+
+    for attempt in range(5):
+        try:
+            client = QdrantClient(
+                host=host,
+                port=port,
+                timeout=30,
+                prefer_grpc=False
+            )
+            client.get_collections()
+            logger.info(f"Successfully connected to Qdrant on attempt {attempt + 1}")
+            return client
+        except Exception as e:
+            logger.warning(f"Connection attempt {attempt + 1} failed: {e}")
+            if attempt < 4:
+                time.sleep(3)
+
+    raise Exception(f"Could not connect to Qdrant at {host}:{port}")
 
 
 def upload_pickle_to_qdrant(

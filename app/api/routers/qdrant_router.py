@@ -1,10 +1,10 @@
 from qdrant_client import models
 from fastapi import APIRouter, HTTPException
-import logging
 import os
+import sys
 
 from src.setup_qdrant import *
-from src.bm25.bm25_utils import get_qdrant_client
+from src.setup_qdrant import get_qdrant_client
 
 logger = logging.getLogger(__name__)
 sys.path.append(os.path.join(os.path.dirname(__file__), '../..', '..'))

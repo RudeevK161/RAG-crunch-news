@@ -127,7 +127,7 @@ RAG-crunch-news/
 
 Характеристики датасета:
 
-- **Количество статей:** 5 488
+- **Количество статей:** > 6 500
 - **Тематика:** искусственный интеллект, стартапы, инвестиции, венчурный рынок и технологические тренды
 - **Формат хранения:** JSON
 - **Валидационная выборка:** 100 размеченных пользовательских запросов и эталонных ответов
@@ -135,7 +135,7 @@ RAG-crunch-news/
 Пример файла корпуса:
 
 ```text
-data/techcrunch_ai_5488_articles_20260112_1535.json
+data/techcrunch_articles.json
 ```
 
 Пример файла с тестовыми вопросами:
@@ -144,18 +144,21 @@ data/techcrunch_ai_5488_articles_20260112_1535.json
 data/questions.json
 ```
 
+**Где скачать:**
+
+Все артефакты (статьи, готовые эмбеддинги, тестовые вопросы) доступны в Yandex Cloud Storage:
+
+👉 [https://console.yandex.cloud/folders/b1gpjgkmbvf6erheh5a2/storage/buckets/rag-crunch-news](https://console.yandex.cloud/folders/b1gpjgkmbvf6erheh5a2/storage/buckets/rag-crunch-news)
+
+В бакете:
+- `data/techcrunch_*.json` — корпус статей (5 488 шт.)
+- `data/questions.json` — валидационная выборка (100 вопросов)
+- `data/octen_par_ch.pkl` — готовые эмбеддинги для быстрой загрузки (joblib)
+
+
 ---
 
 ## 🚀 Быстрый старт
-
-### Предварительные требования
-
-Перед запуском убедитесь, что установлены:
-
-- Docker
-- Docker Compose
-- Не менее 8 ГБ оперативной памяти
-- API-ключ для используемой языковой модели (при необходимости)
 
 ### 1. Клонирование репозитория
 
@@ -164,19 +167,17 @@ git clone https://github.com/yourusername/RAG-crunch-news.git
 cd RAG-crunch-news
 ```
 
-### 2. Создание файла `.env`
+### 2. Настройка файла `.env`
 
-```bash
-cp .env.example .env
-```
+В корне проекта уже присутствует файл `.env`. Перед запуском необходимо указать в нём значения основных переменных окружения, в том числе:
 
-Заполните необходимые переменные окружения:
-
-- `BOT_TOKEN`
-- `OPENAI_API_KEY` (или другой API-ключ)
-- параметры подключения к Redis и Qdrant
+- `BOT_TOKEN` — токен Telegram-бота.
+- `OPENAI_API_KEY` — API-ключ провайдера языковой модели.
+- параметры подключения к Redis и Qdrant.
 
 ### 3. Сборка Docker-образов
+
+Перед первым запуском необходимо собрать Docker-образы всех сервисов.
 
 ```bash
 docker compose build
@@ -192,29 +193,28 @@ docker compose run --rm model_init
 
 ### 5. Запуск сервисов
 
+После загрузки моделей запустите все контейнеры в фоновом режиме.
+
 ```bash
 docker compose up -d
 ```
 
-### 6. Инициализация коллекции Qdrant
+### 6. Загрузка подготовленного `.pkl` файла
 
-```bash
-docker compose exec api python src/setup_qdrant.py
-```
+Скачайте подготовленный файл с эмбеддингами и метаданными из S3-хранилища.
 
-### 7. Индексация статей TechCrunch
+### 7. Импорт коллекции через Streamlit
 
-```bash
-docker compose exec api python -m app.techcrunch_parser.main
-```
-
-### 8. Проверка работы API
-
-Откройте документацию Swagger:
+Откройте административную панель по адресу:
 
 ```text
-http://localhost:8000/docs
+http://localhost:8501
 ```
+
+В разделе **Index** выберите тип Pickle, укажите название коллекции, загрузите скачанный `.pkl` файл, задайте размер батча (например, 100), размер вектора (384, 768, 1024 и т.д. — в зависимости от модели) и метрику расстояния (Cosine). При необходимости отметьте пересоздание коллекции.
+
+
+Итог: После этого система готова к обработке пользовательских запросов через REST API, Streamlit-интерфейс и Telegram-бот.
 
 ---
 
@@ -223,12 +223,13 @@ http://localhost:8000/docs
 После запуска будут доступны следующие сервисы:
 
 | Сервис | URL | Назначение |
-|------|-----|------------|
-| FastAPI | http://localhost:8000 | Основной REST API |
-| Swagger UI | http://localhost:8000/docs | Интерактивная документация API |
+|--------|-----|-------------|
+| FastAPI | http://localhost:8080 | Основной REST API |
+| Swagger UI | http://localhost:8080/docs | Интерактивная документация API |
 | Streamlit Admin Panel | http://localhost:8501 | Административная панель |
 | Qdrant Dashboard | http://localhost:6333/dashboard | Просмотр коллекций и векторов |
 | Nginx Gateway | http://localhost | Единая точка входа |
+| Flower | http://localhost:5555 | Мониторинг Celery задач (воркеры, очереди, графики) |
 
 ---
 
@@ -238,12 +239,3 @@ http://localhost:8000/docs
 
 ---
 
-## 🧪 Пример API-запроса
-
-```bash
-curl -X POST "http://localhost:8000/rag/ask" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "question": "Какие стартапы в сфере AI получили финансирование в январе 2026 года?"
-      }'
-```
