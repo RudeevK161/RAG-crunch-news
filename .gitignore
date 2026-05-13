@@ -11,7 +11,6 @@ dist/
 .eggs/
 
 # Environments
-.env
 .venv
 env/
 venv/
